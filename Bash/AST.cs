@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Bash
+﻿namespace Bash
 {
     public class AST
     {
@@ -21,7 +14,7 @@ namespace Bash
             Root = root;
             Root.Previous = null;
         }
-        
+
         public AST Split()
         {
             FillTree(Root);
@@ -30,15 +23,12 @@ namespace Bash
         }
         private void FillTree(Node node)
         {
-            if (IsCommandContainsLogicalOperations(node, out string unionOperator) && node.Command.Expression.Length > unionOperator.Length)
+            if (IsContainsLogicalOperator(node, out string logicalOperator) && node.Command.Expression.Length > logicalOperator.Length)
             {
-                var indexOfOperator = node.Command.Expression.IndexOf(unionOperator);
+                var indexOfOperator = node.Command.Expression.IndexOf(logicalOperator);
                 var left = node.Command.Expression.Substring(0, indexOfOperator).Trim();
-                var right = node.Command.Expression.Substring(indexOfOperator + unionOperator.Length).Trim();
-                //Console.WriteLine($"Current node: {node.Command.Expression}");
-                //Console.WriteLine($"Parsing left: {left} / Parsing right: {right}");
-                
-                node.Command = new Command(unionOperator);
+                var right = node.Command.Expression.Substring(indexOfOperator + logicalOperator.Length).Trim();
+                node.Command = new Command(logicalOperator);
                 node.SetLeft(new Node(left));
                 node.SetRight(new Node(right));
                 Console.WriteLine($"Current node: {node.Command.Expression}");
@@ -46,26 +36,47 @@ namespace Bash
                 FillTree(node.Left);
                 FillTree(node.Right);
             }
-            else
+            if (IsContainsExecuteOperator(node, out string executeOperator))
             {
-
+                Console.WriteLine("Entered else statement: executeOperator");
+                var indexOfOperator = node.Command.Expression.IndexOf(executeOperator);
+                //var left = node.Command.Expression.Substring(0, indexOfOperator).Trim();
+                var left = node.Command.Expression.Substring(indexOfOperator + executeOperator.Length).Trim();
+                node.Command = new Command(executeOperator);
+                node.SetLeft(new Node(left));
+                //node.SetRight(new Node(right));
+                Console.WriteLine($"Current operator: {node.Command.Expression}");
+                Console.WriteLine($"{node.Command.Expression} args: {node.Left.Command.Expression}");
             }
+
             Console.WriteLine("end");
         }
-        private bool IsCommandContainsLogicalOperations(Node node, out string logicalOperator)
+        private bool IsContainsLogicalOperator(Node node, out string logicalOperator)
         {
-            Type unionOperators = typeof(LogicalOperator);
-            FieldInfo[] operators = unionOperators.GetFields(BindingFlags.Static | BindingFlags.Public);
-            foreach(var oper in operators)
+            foreach (var op in LogicalOperators.GetOperatorsList())
             {
-                logicalOperator = oper.GetValue(null).ToString();
-                if (node.Command.Expression.Contains(logicalOperator))
+                if (node.Command.Expression.Contains(op))
                 {
+                    logicalOperator = op;
                     node.MarkAsLogicalOperator();
                     return true;
                 }
             }
             logicalOperator = string.Empty;
+            return false;
+        }
+        private bool IsContainsExecuteOperator(Node node, out string executeOperator)
+        {
+            foreach (var op in ExecuteOperators.GetOperatorsList())
+            {
+                if (node.Command.Expression.Contains(op))
+                {
+                    executeOperator = op;
+                    node.MarkAsExecuteOperator();
+                    return true;
+                }
+            }
+            executeOperator = string.Empty;
             return false;
         }
     }
