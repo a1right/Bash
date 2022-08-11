@@ -24,7 +24,6 @@ namespace Bash
                 {
                     _operatorsList.Add(op.GetValue(null).ToString());
                 }
-                return _operatorsList;
             }
             return _operatorsList;
         }
