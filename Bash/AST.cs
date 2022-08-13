@@ -1,4 +1,6 @@
-﻿namespace Bash
+﻿using Bash.Operators;
+
+namespace Bash
 {
     public class AST
     {
@@ -51,19 +53,9 @@
 
             Console.WriteLine("end");
         }
-        private bool IsContainsLogicalOperator(Node node, out string logicalOperator)
+        private bool IsContainsLogicalOperator(Node node, out IOperator logicalOperator)
         {
-            foreach (var op in LogicalOperators.GetOperatorsList())
-            {
-                if (node.Command.Expression.Contains(op))
-                {
-                    logicalOperator = op;
-                    node.MarkAsLogicalOperator();
-                    return true;
-                }
-            }
-            logicalOperator = string.Empty;
-            return false;
+            if(node.Command.Expression.Contains)
         }
         private bool IsContainsExecuteOperator(Node node, out string executeOperator)
         {
