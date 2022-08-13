@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bash.Operators.LogicalOperators;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,10 @@ namespace Bash.Operators
 {
     public interface ILogicalOperator : IOperator
     {
-        
+        Priority Priority { get; }
+        bool LeftResult { get; }
+        bool RightResult { get; }
+        bool Result { get; }
+        public bool Calculate();
     }
 }

@@ -14,22 +14,24 @@ namespace Bash.Operators.ExecuteOperators
         public OperatorType OperatorType { get; } = OperatorType.Execute;
 
         public string OperatorKey { get; } = "pwd";
+        public bool ReturnStatus { get; private set; }
 
-        public void Execute()
+        public void Execute(params string[] args)
         {
-            Console.WriteLine(Settings.CurrentDirectory);
-            var directories = Directory.GetDirectories(Settings.CurrentDirectory);
+            Console.WriteLine(GlobalVariables.CurrentDirectory);
+            var directories = Directory.GetDirectories(GlobalVariables.CurrentDirectory);
             foreach(var item in directories)
             {
-                Console.WriteLine(item.Replace(Settings.CurrentDirectory, "") + "\r\t\t\t\t\t--Folder");
+                Console.WriteLine(item.Replace(GlobalVariables.CurrentDirectory, "") + "\r\t\t\t\t\t--Folder");
             }
-            var files = Directory.GetFiles(Settings.CurrentDirectory);
+            var files = Directory.GetFiles(GlobalVariables.CurrentDirectory);
             foreach(var item in files)
             {
-                var fileName = item.Replace(Settings.CurrentDirectory + "\\", "");
+                var fileName = item.Replace(GlobalVariables.CurrentDirectory + "\\", "");
                 var fileExtension = fileName.Substring(fileName.IndexOf(".") + 1);
                 Console.WriteLine((fileName) + $"\r\t\t\t\t\t--{fileExtension} File");
             }
+            ReturnStatus = true;
         }
     }
 }

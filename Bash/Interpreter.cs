@@ -1,4 +1,6 @@
 ﻿
+using Bash.Operators;
+using Bash.Operators.LogicalOperators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,15 +21,14 @@ namespace Bash
         {
             ExecuteAll();
         }
-
         private void ExecuteAll()
         {
-            
-        }
-
-        private void ExecuteCommand(Command command)
-        {
-            
+            foreach(var command in Input)
+            {
+                command.Execute(command.Operator, command.Args);
+                GlobalVariables.LastOperatorReturned = command.ReturnStatus;
+                GlobalVariables.LastOperatorReturnedName = command.Operator.OperatorKey;
+            }
         }
     }
 }

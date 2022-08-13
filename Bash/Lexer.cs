@@ -1,27 +1,69 @@
-﻿namespace Bash
+﻿using Bash.Operators;
+
+namespace Bash
 {
     public class Lexer
     {
-        public Command Input { get; private set; }
-        public AST SyntaxTree { get; private set; }
+        public string Input { get; private set; }
+        private List<Command> _commands;
+        
 
-
-        public void Translate()
+        private void Translate()
         {
             ReadInput();
-            InitializeSyntaxTree();
-            Console.ReadLine();
+            SplitInput();
         }
         
-       
+        public List<Command> GetCommandList()
+        {
+            Translate();
+            return _commands;
+        }
         private void ReadInput()
         {
-            Input = new Command(Console.ReadLine());
+            var input = Console.ReadLine();
+            while(CheckInput(input))
+            {
+                input = Console.ReadLine();
+            }
+            Input = input;
         }
-        private void InitializeSyntaxTree()
+        private bool CheckInput(string input)
         {
-            var tree = new AST(Input);
-            SyntaxTree = tree.Split();
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Console.WriteLine("Empty entry");
+                return true;
+            }
+            return false;
         }
+        private void SplitInput()
+        {
+            var splitedInput = Input.Split(' ');
+            if (_commands == null)
+            {
+                _commands = new List<Command>();
+            }
+            for(int i = 0; i < splitedInput.Length; i++)
+            {
+                if (AllOperatorsDictionary.GetOperatorIfExists(splitedInput[i], out IOperator op))
+                {
+                    
+                    var arguments = string.Empty;
+                    for (int j = i + 1; j < splitedInput.Length; j++)
+                    {
+                        if (AllOperatorsDictionary.IsOperator(splitedInput[j]))
+                            break;
+                        arguments += splitedInput[j];
+                    }
+                    _commands.Add(new Command(op, arguments));
+                }
+            }
+            foreach(var command in _commands)
+            {
+                Console.WriteLine($"Оператор: {command.Operator.OperatorKey}\t\t Аргументы: {command.Args}");
+            }
+        }
+       
     }
 }

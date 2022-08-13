@@ -13,24 +13,32 @@ namespace Bash.Operators.ExecuteOperators
         public OperatorType OperatorType { get; } = OperatorType.Execute;
 
         public string OperatorKey { get; } = "cd";
+        public bool ReturnStatus { get; private set; }
 
-        public void Execute(string args)
+        public void Execute(params string[] args)
         {
-            if (args.StartsWith(".\\") || args.StartsWith("./"))
+            if (args.Length == 1)
             {
-                args = Settings.CurrentDirectory + args;
+                var arguments = args[0];
+                if (arguments.StartsWith(".\\") || arguments.StartsWith("./"))
+                {
+                    arguments = GlobalVariables.CurrentDirectory + arguments;
+                }
+                if (Directory.Exists(arguments))
+                {
+                    GlobalVariables.CurrentDirectory = arguments;
+                    ReturnStatus = true;
+                    return;
+                }
+                else
+                {
+                    ReturnStatus = false;
+                    Console.WriteLine("Directory doesn`t exists");
+                    return;
+                }
             }
-            if (Directory.Exists(args))
-            {
-                Settings.CurrentDirectory = args;
-                var pwd = new PrintWorkingDirectory();
-                pwd.Execute();
-                return;
-            }
-            else
-            {
-                Console.WriteLine("Directory isnt exists");
-            }
+            ReturnStatus = false;
+            Console.WriteLine($"{OperatorKey}: incorrect argument");
         }
     }
 }

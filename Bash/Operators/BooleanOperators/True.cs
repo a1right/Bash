@@ -12,6 +12,12 @@ namespace Bash.Operators.BooleanOperators
 
         public OperatorType OperatorType { get; } = OperatorType.Boolean;
 
-        public string OperatorKey { get; } = "0";
+        public string OperatorKey { get; } = "true";
+
+        public bool ReturnStatus { get; } = true;
+        public override string ToString()
+        {
+            return "0";
+        }
     }
 }

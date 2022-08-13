@@ -10,5 +10,6 @@ namespace Bash.Operators
     {
         public OperatorType OperatorType { get; }
         public string OperatorKey { get; }
+        public bool ReturnStatus { get; }
     }
 }

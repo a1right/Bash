@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bash
 {
-    public static class Settings
+    public static class GlobalVariables
     {
         private static string currentDirectory;
 
@@ -22,6 +22,8 @@ namespace Bash
             }
             set { currentDirectory = value; }
         }
+        public static bool LastOperatorReturned { get; set; }
+        public static string LastOperatorReturnedName { get; set; }
 
     }
 }

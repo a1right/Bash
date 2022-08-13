@@ -8,51 +8,24 @@ namespace Bash
 {
     public class Node
     {
-        public Command Command { get; set; }
-        public Node Left { get; set; }
-        public Node Right { get; set; }
-        public Node Previous { get; set; }
-        public bool IsLogicalOperator { get; private set; }
-        public bool IsExecuteOperator { get; private set; }
-        public bool IsArgument { get; private set; }
-        public void MarkAsLogicalOperator()
-        {
-            IsLogicalOperator = true;
-        }
-        public void MarkAsExecuteOperator()
-        {
-            IsExecuteOperator = true;
-        }
-        public void MarkAsArgument()
-        {
-            IsArgument = true;
-        }
-
-        public Node(string expression)
-        {
-            Command = new Command(expression);
-        }
-        public Node(Command command)
+        public ICommand Command { get; init; }
+        public Node Left { get; private set; }
+        public Node Right { get; private set; }
+        public Node Previous { get; private set; }
+        public bool IsChecked { get; private set; }
+        public Node(ICommand command)
         {
             Command = command;
-            Left = null;
-            Right = null;
         }
-        public void SetRight(Node node)
+        public void AddRight(Node node)
         {
-            node.Previous = this;
             Right = node;
-        }
-        public void SetLeft(Node node)
-        {
             node.Previous = this;
-            Left = node;
         }
-        public override string ToString()
+        public void AddLeft(Node node)
         {
-            if (Command != null)
-                return Command.Expression.ToString();
-            return string.Empty;
+            Left = node;
+            node.Previous = this;
         }
     }
 }

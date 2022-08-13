@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace Bash.Operators.ExecuteOperators
 {
-    public class Echo : IExecuteOperator
+    public class ConsoleClear : IExecuteOperator
     {
-        public bool IsRequireArgs { get; } = true;
+        public bool IsRequireArgs { get; } = false;
 
         public OperatorType OperatorType { get; } = OperatorType.Execute;
 
-        public string OperatorKey { get; } = "echo";
+        public string OperatorKey { get; } = "cls";
+
         public bool ReturnStatus { get; private set; }
+
         public void Execute(params string[] args)
         {
-            foreach(var word in args)
-            {
-                Console.Write(word);
-            }
+            Console.Clear();
+            ReturnStatus = true;
         }
     }
 }

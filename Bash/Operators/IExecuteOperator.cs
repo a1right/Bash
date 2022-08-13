@@ -9,5 +9,6 @@ namespace Bash.Operators
     public interface IExecuteOperator : IOperator
     {
         public bool IsRequireArgs { get; }
+        public void Execute(params string[] args);
     }
 }
