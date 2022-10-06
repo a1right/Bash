@@ -25,6 +25,14 @@ namespace Bash.Operators.LogicalOperators
         {
             return LeftResult || RightResult;
         }
+        public bool SetLeftResult(bool returnStatus)
+        {
+            return LeftResult = returnStatus;
+        }
+        public bool SetRightResult(bool returnStatus)
+        {
+            return LeftResult = returnStatus;
+        }
     }
 
 }

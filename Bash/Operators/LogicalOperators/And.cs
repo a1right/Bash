@@ -17,13 +17,21 @@ namespace Bash.Operators.LogicalOperators
 
         public bool LeftResult {get; private set; }
 
-        public bool RightResult { get; private set; }
+        public bool RightResult { get; private set; } = true;
 
         public bool Result { get; private set; }
 
         public bool Calculate()
         {
             return LeftResult && RightResult;
+        }
+        public bool SetLeftResult(bool returnStatus)
+        {
+            return LeftResult = returnStatus;
+        }
+        public bool SetRightResult(bool returnStatus)
+        {
+            return LeftResult = returnStatus;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Bash
             }
             set { currentDirectory = value; }
         }
-        public static bool LastOperatorReturned { get; set; }
+        public static bool LastOperatorReturnedStatus { get; set; }
         public static string LastOperatorReturnedName { get; set; }
 
     }

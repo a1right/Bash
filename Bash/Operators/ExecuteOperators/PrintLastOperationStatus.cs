@@ -18,9 +18,9 @@ namespace Bash.Operators.ExecuteOperators
 
         public void Execute(params string[] args)
         {
-            if(GlobalVariables.LastOperatorReturned != null)
+            if(GlobalVariables.LastOperatorReturnedStatus != null)
             {
-                var status = AllOperatorsDictionary.GetOperatorIfExists(GlobalVariables.LastOperatorReturned.ToString(), out IOperator op);
+                var status = OperatorsFactory.GetOperatorIfExists(GlobalVariables.LastOperatorReturnedStatus.ToString(), out IOperator op);
                 Console.WriteLine($"Last operator: {GlobalVariables.LastOperatorReturnedName} returned status {op}({op.OperatorKey})");
                 return;
             }

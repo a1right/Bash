@@ -4,14 +4,14 @@ using Bash.Operators.ExecuteOperators;
 
 namespace Bash.Operators
 {
-    public static class AllOperatorsDictionary
+    public static class OperatorsFactory
     {
         private static Dictionary<string, IOperator> operators = new()
         {
             #region Logical
-            {"&&", new And() as ILogicalOperator },
-            {"||", new Or() as ILogicalOperator},
-            {";", new Both() as ILogicalOperator},
+            {"&&", new And()},
+            {"||", new Or()},
+            {";", new Both()},
             #endregion
             #region Boolean
             {"True", new True() },

@@ -46,13 +46,13 @@ namespace Bash
             }
             for(int i = 0; i < splitedInput.Length; i++)
             {
-                if (AllOperatorsDictionary.GetOperatorIfExists(splitedInput[i], out IOperator op))
+                if (OperatorsFactory.GetOperatorIfExists(splitedInput[i], out IOperator op))
                 {
                     
                     var arguments = string.Empty;
                     for (int j = i + 1; j < splitedInput.Length; j++)
                     {
-                        if (AllOperatorsDictionary.IsOperator(splitedInput[j]))
+                        if (OperatorsFactory.IsOperator(splitedInput[j]))
                             break;
                         arguments += splitedInput[j];
                     }

@@ -4,8 +4,8 @@ namespace Bash
 {
     public class Command: ICommand
     {
-        public string Args { get; init; }
-        public IOperator @Operator { get; init; }
+        public string? Args { get; init; }
+        public IOperator @Operator { get; private set; }
         public bool ReturnStatus { get; private set; }
 
         public Command(IOperator @operator)

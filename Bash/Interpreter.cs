@@ -26,7 +26,7 @@ namespace Bash
             foreach(var command in Input)
             {
                 command.Execute(command.Operator, command.Args);
-                GlobalVariables.LastOperatorReturned = command.ReturnStatus;
+                GlobalVariables.LastOperatorReturnedStatus = command.ReturnStatus;
                 GlobalVariables.LastOperatorReturnedName = command.Operator.OperatorKey;
             }
         }
